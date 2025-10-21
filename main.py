@@ -39,3 +39,9 @@ def menu_principal():
             break
         else:
             print("Opción NO válida. Intentalo de nuevo.")
+
+def main():
+    menu_principal()
+
+if __name__ == "__main__":
+    main()
