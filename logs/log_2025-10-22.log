@@ -1,0 +1,19 @@
+2025-10-22 20:09:38,919 - INFO - 3 fichas cargadaa correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\gestion_fichas\..\data\fichas.json.
+2025-10-22 20:09:42,858 - INFO - Fichas mostradas correctamente.
+2025-10-22 20:10:20,518 - INFO - Ficha guardada correctamente.
+2025-10-22 20:10:20,519 - INFO - Ficha creada: Carlengas fanegas / 50 / Huevardos
+2025-10-22 20:13:44,215 - INFO - Fichas mostradas correctamente.
+2025-10-22 20:14:55,950 - INFO - Se ha cancelado y no se ha actualizado la ficha idx = 0.
+2025-10-22 20:15:23,851 - INFO - Ficha guardada correctamente.
+2025-10-22 20:15:23,851 - INFO - Ficha creada: Jose Luis / 42 / Don Benito
+2025-10-22 20:16:13,337 - INFO - Se ha cancelado y no se ha actualizado la ficha idx = 3.
+2025-10-22 20:16:44,762 - INFO - Ficha guardada correctamente.
+2025-10-22 20:16:44,763 - INFO - Ficha creada: Carlos V. Gallego Sosa / 40 / Badajoz
+2025-10-22 20:17:35,198 - INFO - Nombre modificado para idx = 3.
+2025-10-22 20:17:40,740 - INFO - Ficha guardada correctamente.
+2025-10-22 20:17:40,740 - INFO - Ficha idx = 3 guardada (modificada).
+2025-10-22 20:18:24,774 - INFO - Ficha guardada correctamente.
+2025-10-22 20:18:24,774 - INFO - Ficha eliminada:
+idx = 3
+Nombre: Carlos Fanegas
+2025-10-22 20:25:30,559 - ERROR - Se ha introducido una entrada no válida para modificar una ficha.
