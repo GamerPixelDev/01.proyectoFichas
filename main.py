@@ -1,5 +1,5 @@
 from gestion_fichas.fichas import (
-    cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_fichas_por_nombre, modificar_ficha
+    cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
 )
 
 def menu_principal():
@@ -22,7 +22,7 @@ def menu_principal():
         elif opcion == "2":
             mostrar_datos(fichas)
         elif opcion == "3":
-            buscar_fichas_por_nombre(fichas)
+            buscar_ficha(fichas)
         elif opcion == "4":
             modificar_ficha(fichas)
         elif opcion == "5":

@@ -1,7 +1,7 @@
 import json
 import os
 from datetime import datetime
-from utils import pedir_nombre, pedir_edad, pedir_ciudad, obtener_fecha
+from gestion_fichas.utils import pedir_nombre, pedir_edad, pedir_ciudad, obtener_fecha
 
 NOMBRE_ARCHIVO = "fichas.json"
 
