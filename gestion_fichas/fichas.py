@@ -3,8 +3,17 @@ import os
 from datetime import datetime
 from gestion_fichas.utils import pedir_nombre, pedir_edad, pedir_ciudad, obtener_fecha
 
-NOMBRE_ARCHIVO = "fichas.json"
+#=== Configuración de rutas ===
+#Carpeta base --> donde está este archivo (gestion_fichas/)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#Carpeta 'data' --> un nivel por encima
+DATA_DIR = os.path.join(BASE_DIR, "..", "data")
+#Crear la carpeta si no existe
+os.makedirs(DATA_DIR, exist_ok=True)
+#Ruta completa del archivo JSON
+NOMBRE_ARCHIVO = os.path.join(DATA_DIR, "fichas.json")
 
+#=== Funciones de carga y guardado ===
 def cargar_fichas(nombre_archivo=NOMBRE_ARCHIVO):
     #Carga las fichas desde un archivo JSON si existe, o crea una lista vacia.
     if os.path.exists(nombre_archivo):

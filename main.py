@@ -16,7 +16,7 @@ def menu_principal():
         6. Salir
         ==========================      
         """)
-        opcion = input("Elige una opción (1-5): ").strip()
+        opcion = input("Elige una opción (1-6): ").strip()
         if opcion == "1":
             crear_ficha(fichas)
         elif opcion == "2":
