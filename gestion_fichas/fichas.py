@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime
 from gestion_fichas.utils import pedir_nombre, pedir_edad, pedir_ciudad, obtener_fecha
+from gestion_fichas.logger_config import logger
 
 #=== Configuración de rutas ===
 #Carpeta base --> donde está este archivo (gestion_fichas/)
@@ -14,66 +15,84 @@ os.makedirs(DATA_DIR, exist_ok=True)
 NOMBRE_ARCHIVO = os.path.join(DATA_DIR, "fichas.json")
 
 #=== Funciones de carga y guardado ===
-def cargar_fichas(nombre_archivo=NOMBRE_ARCHIVO):
+def cargar_fichas(nombre_archivo = NOMBRE_ARCHIVO):
     #Carga las fichas desde un archivo JSON si existe, o crea una lista vacia.
     if os.path.exists(nombre_archivo):
         try:
             with open(nombre_archivo, "r", encoding="utf-8") as f:
                 fichas = json.load(f)
-                #print(f"{len(fichas)} fichas cargadas desde {nombre_archivo}.")
+                logger.info(f"{len(fichas)} fichas cargadaa correctamente desde {nombre_archivo}.")
                 return fichas
         except json.JSONDecodeError:
+            logger.warning(f"El archivo {nombre_archivo} estaba dañado o vacío.")
             print(f"El archivo {nombre_archivo} está dañado o vacío. Se creará uno nuevo.")
             return []
         except Exception as e:
+            logger.error(f"Error al leer el archivo {nombre_archivo}: {e}")
             print(f"Error leyendo {nombre_archivo}: {e}")
             return []
     else:
+        logger.warning(f"No se ha encontrado el archivo {nombre_archivo}. Se usará una lista vacía.")
         print(f"No se encontró {nombre_archivo}. Se creará uno nuevo al cargar.")
         return []
 
-def guardar_fichas(fichas, nombre_archivo=NOMBRE_ARCHIVO):
+def guardar_fichas(fichas, nombre_archivo = NOMBRE_ARCHIVO):
     #Guarda la lista completa en JSON (sobreescribe).
     try:
         with open(nombre_archivo, "w", encoding="utf-8") as f:
             json.dump(fichas, f, ensure_ascii=False, indent=4)
     except Exception as e:
+        logger.error(f"Error al guardar la ficha: {e}")
         print(f"Error al guardar fichas: {e}")
     else:
+        logger.info("Ficha guardada correctamente.")
         print(f"Fichas guardadas en {nombre_archivo} (total: {len(fichas)}).")
 
-def crear_ficha(fichas, nombre_archivo=NOMBRE_ARCHIVO):
-    #Crea una nueva ficha y la añade a la lista, guardando después.
-    nombre = pedir_nombre()
-    edad = pedir_edad() #Devuelve un int
-    ciudad = pedir_ciudad()
-    fecha_now = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    nueva_ficha={
-        "nombre": nombre,
-        "edad": edad,
-        "ciudad": ciudad,
-        "fecha_creacion":fecha_now,
-        "fecha_modificacion":None
-    }
-    #Comprobamos duplicados por nombre exacto (insensible a mayúsculas)
-    existentes = [f for f in fichas if f["nombre"].lower() == nombre.lower()]
-    if existentes:
-        print(f"Ya existe/n {len(existentes)} ficha/s con ese nombre.")
-        if input("¿Crear otra igualmente? (s/n): ").strip().lower() != "s":
-            print("Cancelado.")
-            return
-    fichas.append(nueva_ficha)
-    guardar_fichas(fichas, nombre_archivo)
+def crear_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
+    try:
+        #Crea una nueva ficha y la añade a la lista, guardando después.
+        nombre = pedir_nombre()
+        edad = pedir_edad() #Devuelve un int
+        ciudad = pedir_ciudad()
+        fecha_now = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        nueva_ficha={
+            "nombre": nombre,
+            "edad": edad,
+            "ciudad": ciudad,
+            "fecha_creacion":fecha_now,
+            "fecha_modificacion":None
+        }
+        #Comprobamos duplicados por nombre exacto (insensible a mayúsculas)
+        existentes = [f for f in fichas if f["nombre"].lower() == nombre.lower()]
+        if existentes:
+            print(f"Ya existe/n {len(existentes)} ficha/s con ese nombre.")
+            if input("¿Crear otra igualmente? (s/n): ").strip().lower() != "s":
+                logger.info("Se ha cancelado la creación de una ficha al haber una con el mismo nombre.")
+                print("Cancelado.")
+                return
+        fichas.append(nueva_ficha)
+        guardar_fichas(fichas, nombre_archivo)
+        logger.info(f"Ficha creada: {nombre} / {edad} / {ciudad}")
+    except Exception as e:
+        logger.error(f"Error al crear ficha: {e}")
+        print("Error al crear la ficha.")
 
 def mostrar_datos(fichas):
     if not fichas:
+        logger.warning("No hay ninguna ficha creada aún.")
         print("No hay fichas registradas todavía.")
         return
     print("\n=== FICHAS REGISTRADAS ===")
     for i, ficha in enumerate(fichas, start=1):
-        print(f"\nFicha {i}:")
-        for clave, valor in ficha.items():
-            print(f"{clave}: {valor}")
+        print(
+            f"\nFicha {i}:"
+            f"\nNombre: {ficha.get('nombre')}"
+            f"\nEdad: {ficha.get('edad')}"
+            f"\nCiudad: {ficha.get('ciudad')}"
+            f"\nCreada: {ficha.get('fecha_creacion')}"
+            f"\nmodificada: {ficha.get('fecha_modificacion')}"
+        )
+    logger.info("Fichas mostradas correctamente.")
     print("==========================\n")
 
 def buscar_fichas_por_nombre(fichas, termino):
@@ -89,6 +108,7 @@ def buscar_ficha(fichas):
     termino = input("Introduce el nombre a buscar: ").strip()
     resultados = buscar_fichas_por_nombre(fichas, termino)
     if not resultados:
+        logger.warning("No se han encontrado coincidencias en la búsqueda.")
         print("No se encuetran coincidencias.")
         return
     print(f"\nSe encontraron {len(resultados)} que coindice/n:")
@@ -102,10 +122,11 @@ def buscar_ficha(fichas):
             f"\nModificada: {f['fecha_modificacion']}"
         )
 
-def modificar_ficha(fichas, nombre_archivo=NOMBRE_ARCHIVO):
+def modificar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
     nombre_buscado= input("Introduce el nombre de la ficha que quieras buscar/modificar: ").strip().lower()
     coincidencias = buscar_fichas_por_nombre(fichas, nombre_buscado)
     if not coincidencias:
+        logger.warning(f"No se han encontrado coincidencias para {nombre_buscado}.")
         print("No se encontraron fichas con ese nombre.")
         return
     print(f"\nSe encontraron {len(coincidencias)} coincidencia/s:\n")
@@ -115,15 +136,18 @@ def modificar_ficha(fichas, nombre_archivo=NOMBRE_ARCHIVO):
             f"\nNombre: {f.get('nombre')}"
             f"\nEdad: {f.get('edad')}"
             f"\nCiudad: {f.get('ciudad')}"
+            f"\nindex: {idx}"
         )
     if len(coincidencias) > 1:
         try:
             pos = int(input(f"Elige el número de la ficha a modificar: (1 - {len(coincidencias)}): ").strip())
-            #ficha = coincidencias[pos]
+            if not (1 <= pos <= len(coincidencias)):
+                raise ValueError("Fuera de rango.")
+            sel_index = pos - 1
         except ValueError:
+            logger.error("Se ha introducido una entrada no válida para modificar una ficha.")
             print("Entrada no válida.")
             return
-        sel_index = pos - 1
     else:
         sel_index = 0
     idx_global, ficha = coincidencias[sel_index] #Índice real en la lista fichas
@@ -137,45 +161,75 @@ def modificar_ficha(fichas, nombre_archivo=NOMBRE_ARCHIVO):
         eleccion = input("Elige que desea cambiar (1 - 5): ").strip()
         if eleccion == "1":
             ficha["nombre"] = pedir_nombre()
+            logger.info(f"Nombre modificado para idx = {idx_global}.")
         elif eleccion == "2":
             ficha["edad"] = pedir_edad()
+            logger.info(f"Edad modificada para idx = {idx_global}.")
         elif eleccion == "3":
             ficha["ciudad"] = pedir_ciudad()
+            logger.info(f"Ciudad modificada para idx = {idx_global}.")
         elif eleccion == "4":
             ficha["fecha_modificacion"] = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
             fichas[idx_global] = ficha #Se actualiza la lista principal
             guardar_fichas(fichas, nombre_archivo)
+            logger.info(f"Ficha idx = {idx_global} guardada (modificada).")
             print("Ficha modificada y guardada.")
             return #Se puede cambiar por un return para volver al menu principal
         elif eleccion == "5":
+            logger.info(f"Se ha cancelado y no se ha actualizado la ficha idx = {idx_global}.")
             print("Modificación cancelada, no se ha guardado nada.")
             return
         else:
+            logger.warning("Opción no válida en el menú de modificación.")
             print("Opción NO válida. Inténtelo de nuevo.")
 
-def eliminar_ficha(fichas, nombre_archivo=NOMBRE_ARCHIVO):
+def eliminar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
     nombre_buscado= input("Introduce el nombre de la ficha que quieras eliminar: ").strip().lower()
     coincidencias = buscar_fichas_por_nombre(fichas, nombre_buscado)
     if not coincidencias:
+        logger.warning(f"No se ha encontrado fichas para eliminar con {nombre_buscado}.")
         print("No se encontraron fichas con ese nombre.")
         return
     print(f"\nSe encontraron {len(coincidencias)} coincidencia/s:\n")
-    for i, ficha in enumerate(coincidencias, start=1):
-        print(f"Ficha [{i}]: {ficha}")
+    for i, (idx, f) in enumerate(coincidencias, start=1):
+        print(
+            f"Ficha [{i}]"
+            f"\nNombre: {f.get('nombre')}"
+            f"\nEdad: {f.get('edad')}"
+            f"\nCiudad: {f.get('ciudad')}"
+            f"\nindex: {idx}"
+        )
     if len(coincidencias) > 1:
         try:
             pos = int(input(f"Elige el número de la ficha a eliminar: (1 - {len(coincidencias)}): ").strip())
-            eliminar_ficha = coincidencias[pos]
+            if not (1 <= pos <= len(coincidencias)):
+                raise ValueError("Fuera de rango.")
+            sel_index = pos - 1
         except ValueError:
+            logger.error("Selección inválida al eliminar ficha.")
             print("Entrada no válida.")
             return
     else:
-        eliminar_ficha = 0
-    print(f"Ficha seleccionada:\n{eliminar_ficha}")
+        sel_index = 0
+    idx_global, ficha_a_eliminar = coincidencias[sel_index]
+    print(
+        f"\nNombre: {ficha_a_eliminar.get('nombre')}"
+        f"\nEdad: {ficha_a_eliminar.get('edad')}"
+        f"\nCiudad: {ficha_a_eliminar.get('ciudad')}"
+    )
     confirmar = input("Esta acción no se puede deshacer. ¿Eliminar definitivamente la ficha? (s/n): ").strip().lower()
     if confirmar == "s":
-        fichas.remove(eliminar_ficha)
-        guardar_fichas(fichas, nombre_archivo)
-        print("Ficha eliminada correctamente.")
+        try:
+            fichas.pop(idx_global)
+            guardar_fichas(fichas, nombre_archivo)
+            logger.info(
+                f"Ficha eliminada:\nidx = {idx_global}"
+                f"\nNombre: {ficha_a_eliminar.get('nombre')}"
+                )
+            print("Ficha eliminada correctamente.")
+        except Exception as e:
+            logger.exception(f"Error eliminando la ficha idx = {idx_global}: {e}")
+            print("Error al eliminar la ficha.")
     else:
+        logger.info("Se ha cancelado la eliminación de la ficha.")
         print("Acción cancelada.")
