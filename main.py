@@ -1,38 +1,48 @@
 from gestion_fichas.fichas import cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
 from gestion_fichas.usuarios import registrar_usuario, autenticar_usuario
-from gestion_fichas.logger_config import app_logger, user_logger
-from datetime import datetime
+from gestion_fichas.session_manager import iniciar_sesion, cerrar_sesion, obtener_sesion_actual
+from gestion_fichas.logger_config import app_logger
 
-def pantalla_autenticacion():
+
+def menu_autenticacion():
     while True:
-        print("\n1) Iniciar sesión\n2) Registrarse\n3) Salir")
-        opt = input("Elige: ").strip()
-        if opt == "1":
+        print(
+            "=== MENÚ DE AUTENTICACIÓN ==="
+            "\n1) Iniciar sesión."
+            "\n2) Registrarse."
+            "\n3) Salir."
+        )
+        opcion = input("Elige una opción: ").strip()
+        if opcion == "1":
             username = input("Usuario: ").strip()
             password = input("Contraseña: ").strip()
-            res = autenticar_usuario(username, password)
-            if res:
-                token, user_public = res
-                print(f"Bienvenido {user_public['username']} (role = {user_public['role']}).")
-                return token, user_public
+            resultado = autenticar_usuario(username, password)
+            if resultado:
+                token, user = resultado
+                print(f"Bienvenido {user['username']} (rol = {user.get['role', 'user']}).")
+                iniciar_sesion(user, token)
+                return user, token
             else:
-                #app_logger.error(f"Usuario {username} ha fallado al intentar entrar (pass usado: {password}).")
                 print("Credenciales incorrectas.")
-        elif opt == "2":
-            username = input("Usuario nuevo: ").strip()
-            password = input("Contraseña: ").strip()
+                app_logger.info(f"Intento de login fallido para el usuario: {username}.")
+        elif opcion == "2":
+            username = input("Elige un nombre de usuario: ").strip()
+            password = input("Elige una contraseña: ").strip()
             try:
-                registrar_usuario(username, password, role="user")
-                #app_logger.info(f"Nuevo usuario creado: {username}/{password}")
-                print("Usuario creado. Inicie seción.")
-            except ValueError as e:
-                print(e)
+                registrar_usuario(username, password) #espera username, password
+                app_logger.info(f"Usuario registrado: {username}.")
+            except ValueError as v:
+                print(f"No se pudo crear el usuario: {v}")
+                app_logger.warning(f"Intento de crear usuario inválido: {username} ({v})")
+        elif opcion == "3":
+            print("Hasta pronto.")
+            app_logger.info("Usuario salió desde el menú de autenticación.")
+            exit(0)
         else:
-            return None, None
+            print("Opción no válida.")
 
 def menu_principal(current_user, token):
     fichas = cargar_fichas()
-    cambios = False #Flag para controlar su hubo cambios
     while True:
         print("""
         ===== MENÚ PRINCIPAL =====
@@ -56,25 +66,32 @@ def menu_principal(current_user, token):
         elif opcion == "5":
             eliminar_ficha(fichas)
         elif opcion == "6":
-            if cambios:
-                respuesta = input("Se han realizado cambios. ¿Desea guardarlos antes de salir? (s/n): ").strip().lower()
-                if respuesta == "s":
-                    guardar_fichas(fichas)
-                    print("Cambios guardados correctamente.")
-                else:
-                    print("Cambios descartados.")
-            print("Venga, hasta luego loco.")
-            break
+            cerrar_sesion()
+            print("Venga, hasta luego loco. Volviendo al menu de autenticación...")
+            return
         else:
             print("Opción NO válida. Intentalo de nuevo.")
 
 def main():
-    menu_principal()
+    #Comprobamos si hy una sesión activa
+    sesion = obtener_sesion_actual()
+    if sesion:
+        print(f"Sesión activa detectada: {sesion['usuario']}")
+        continuar = input("¿Desea continuar con esa sesión? (s/n)").strip().lower()
+        if continuar == "s":
+            current_user = {"username": sesion["usuario"], "role": sesion["rol"]}
+            token = sesion["token"]
+        else:
+            cerrar_sesion()
+            current_user, token = menu_autenticacion()
+    else:
+        current_user, token = menu_autenticacion()
+    #Inicia el menu principal (psa usuario y token)
+    menu_principal(current_user, token)
+    #Cuando se salga del menu princiapl -> cerrar sesión
+    cerrar_sesion()
+    print("Sesión cerrada correctamente.")
+    app_logger.info(f"Sesión finalizada para el usuario: {current_user.get('username')}.")
 
 if __name__ == "__main__":
-    token, current_user = pantalla_autenticacion()
-    if not current_user:
-        app_logger.info(f"Usuario a salido.")
-        print("Saliendo.")
-        exit(0)
-    menu_principal(current_user, token) #Inicia menu principal pasando current_user y token
+    main()
