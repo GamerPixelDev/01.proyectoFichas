@@ -12,26 +12,29 @@ APP_LOG_FILE = os.path.join(LOG_DIR, "app.log")
 ERROR_LOG_FILE = os.path.join(LOG_DIR, "errors.log")
 USER_LOG_FILE = os.path.join(LOG_DIR, "user_actions.log")
 
-#=== Configuración general de formato del logger ===
+#=== Formato general ===
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-#=== Logger principal ===
-app_logger = logging.getLogger("gestion_fichas")
-app_logger.setLevel(logging.INFO)
-
-#--- Handler principal (mensajes generales) ---
+#=== HANDLERS ===
+#--- Mensajes generales ---
 app_handler = logging.FileHandler(APP_LOG_FILE, encoding="utf-8")
+app_handler.setLevel(logging.INFO)
 app_handler.setFormatter(formatter)
 
-#--- Handler para errores ---
+#--- Errores ---
 error_handler = logging.FileHandler(ERROR_LOG_FILE, encoding="utf-8")
 error_handler.setLevel(logging.ERROR)
 error_handler.setFormatter(formatter)
 
-#--- Handler para acciones del usuario ---
+#--- Acciones del usuario ---
 user_handler = logging.FileHandler(USER_LOG_FILE, encoding="utf-8")
 user_handler.setLevel(logging.INFO)
 user_handler.setFormatter(formatter)
+
+#=== LOGGERS ===
+#--- Logger general ---
+app_logger = logging.getLogger("gestion_fichas")
+app_logger.setLevel(logging.INFO)
 
 #Para evitare duplicidades de handlers
 if not app_logger.handlers:
@@ -40,13 +43,12 @@ if not app_logger.handlers:
     app_logger.addHandler(user_handler)
 
 #=== Loggers secundarios ===
-logger = app_logger #Paara logs generales
 error_logger = logging.getLogger("gestion_fichas.error")
-usser_logger = logging.getLogger("gestion_fichas.user")
+user_logger = logging.getLogger("gestion_fichas.user")
 
 #Reutilizan los mismos handlers del logger principal
 error_logger.handlers = app_logger.handlers
-usser_logger.handlers = app_logger.handlers
+user_logger.handlers = app_logger.handlers
 
 """#Nombre del archivo de log por fecha
 log_filename = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d')}.log")
