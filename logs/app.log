@@ -21,3 +21,17 @@
 2025-10-23 19:06:20,219 - INFO - Ficha idx = 4 guardada (modificada).
 2025-10-23 19:06:20,219 - INFO - Ficha idx = 4 guardada (modificada).
 2025-10-23 19:06:31,562 - INFO - Se encontraron 1 fichas que copinciden con la búsqueda realizada.
+2025-10-23 20:27:52,195 - INFO - Intento de login fallido para el usuario: Peneni.
+2025-10-23 20:28:05,287 - INFO - Intento de login fallido para el usuario: Peneni.
+2025-10-23 20:29:40,509 - INFO - Guardados 2 usuarios.
+2025-10-23 20:29:40,509 - INFO - Usuario registrado: Carlos (role=user)
+2025-10-23 20:29:40,509 - INFO - Usuario registrado: Carlos (role=user)
+2025-10-23 20:29:40,509 - INFO - Usuario registrado: Carlos.
+2025-10-23 20:29:54,461 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:29:54,461 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:31:33,648 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:31:33,648 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:33:15,546 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:33:15,546 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:36:45,871 - INFO - Usuario autenticado: Carlos
+2025-10-23 20:36:45,871 - INFO - Usuario autenticado: Carlos

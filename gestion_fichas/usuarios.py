@@ -99,7 +99,7 @@ def autenticar_usuario(username: str, password: str):
     user_logger.info(f"Usuario autenticado: {username}")
     #Devolvemos token y datos públicos del usuario
     public = {k: v for k, v in user.items() if k not in ("salt", "password_hash")}
-    return token, public
+    return public, token
 
 def verificar_token(token: str):
     #Devuelve user public si token válido, sino None
@@ -112,7 +112,7 @@ def verificar_token(token: str):
     usuarios = cargar_usuarios() #Cargamos usuario
     for u in usuarios:
         if u["id"] == ses["user_id"]:
-            return {k: v for k, v in u.items() if k not in ("salt", "apassword:hash")}
+            return {k: v for k, v in u.items() if k not in ("salt", "password:hash")}
     return None
 
 def logout(token: str):

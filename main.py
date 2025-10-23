@@ -18,8 +18,8 @@ def menu_autenticacion():
             password = input("Contraseña: ").strip()
             resultado = autenticar_usuario(username, password)
             if resultado:
-                token, user = resultado
-                print(f"Bienvenido {user['username']} (rol = {user.get['role', 'user']}).")
+                user, token = resultado
+                print(f"Bienvenido {user['username']} (rol = {user.get('role', 'user')}).")
                 iniciar_sesion(user, token)
                 return user, token
             else:
@@ -88,7 +88,7 @@ def main():
         current_user, token = menu_autenticacion()
     #Inicia el menu principal (psa usuario y token)
     menu_principal(current_user, token)
-    #Cuando se salga del menu princiapl -> cerrar sesión
+    #Cuando se salga del menu principal -> cerrar sesión
     cerrar_sesion()
     print("Sesión cerrada correctamente.")
     app_logger.info(f"Sesión finalizada para el usuario: {current_user.get('username')}.")
