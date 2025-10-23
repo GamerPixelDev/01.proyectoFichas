@@ -1,0 +1,10 @@
+[
+    {
+        "id": "5c36abf4-06fa-4425-823c-195bf7f61b2f",
+        "username": "Peneni",
+        "salt": "eede6d344400b0dc216647701bf88406",
+        "password_hash": "964b299c5e4589245d4702c19cd497d939870e780dbb8eececddc6a07a6549b1",
+        "role": "user",
+        "created_at": "2025-10-23T18:48:53.076651"
+    }
+]

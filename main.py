@@ -1,5 +1,7 @@
 from gestion_fichas.fichas import cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
+from gestion_fichas.usuarios import registrar_usuario, autenticar_usuario
 from gestion_fichas.logger_config import app_logger, user_logger
+from datetime import datetime
 
 def pantalla_autenticacion():
     while True:
@@ -14,19 +16,21 @@ def pantalla_autenticacion():
                 print(f"Bienvenido {user_public['username']} (role = {user_public['role']}).")
                 return token, user_public
             else:
+                #app_logger.error(f"Usuario {username} ha fallado al intentar entrar (pass usado: {password}).")
                 print("Credenciales incorrectas.")
         elif opt == "2":
             username = input("Usuario nuevo: ").strip()
             password = input("Contraseña: ").strip()
             try:
                 registrar_usuario(username, password, role="user")
+                #app_logger.info(f"Nuevo usuario creado: {username}/{password}")
                 print("Usuario creado. Inicie seción.")
             except ValueError as e:
                 print(e)
         else:
             return None, None
 
-def menu_principal():
+def menu_principal(current_user, token):
     fichas = cargar_fichas()
     cambios = False #Flag para controlar su hubo cambios
     while True:
@@ -70,7 +74,7 @@ def main():
 if __name__ == "__main__":
     token, current_user = pantalla_autenticacion()
     if not current_user:
+        app_logger.info(f"Usuario a salido.")
         print("Saliendo.")
         exit(0)
     menu_principal(current_user, token) #Inicia menu principal pasando current_user y token
-    main()

@@ -1,0 +1,23 @@
+2025-10-23 18:38:20,895 - ERROR - Usuario Carlos ha fallado al intentar entrar (pass usado: peneni38). 2025/10/23 18:38:20
+2025-10-23 18:38:26,042 - INFO - Usuario a salido.
+2025-10-23 18:40:52,099 - INFO - Guardados 1 usuarios.
+2025-10-23 18:40:52,099 - INFO - Usuario registrado: Peneni (role=user)
+2025-10-23 18:40:52,099 - INFO - Usuario registrado: Peneni (role=user)
+2025-10-23 18:40:52,099 - INFO - Nuevo usuario creado: Peneni/Peneni38
+2025-10-23 18:47:07,288 - ERROR - Usuario Peneni ha fallado al intentar entrar (pass usado: Peneni38).
+2025-10-23 18:48:53,078 - INFO - Guardados 1 usuarios.
+2025-10-23 18:48:53,079 - INFO - Usuario registrado: Peneni (role=user)
+2025-10-23 18:48:53,079 - INFO - Usuario registrado: Peneni (role=user)
+2025-10-23 18:48:53,079 - INFO - Nuevo usuario creado: Peneni/Pepis38
+2025-10-23 19:02:09,683 - INFO - Usuario autenticado: Peneni
+2025-10-23 19:02:09,683 - INFO - Usuario autenticado: Peneni
+2025-10-23 19:05:12,163 - INFO - Usuario autenticado: Peneni
+2025-10-23 19:05:12,163 - INFO - Usuario autenticado: Peneni
+2025-10-23 19:05:12,163 - INFO - 5 fichas cargadaa correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\gestion_fichas\..\data\fichas.json.
+2025-10-23 19:05:28,811 - INFO - Se encontraron 3 fichas que copinciden con la búsqueda realizada.
+2025-10-23 19:06:15,138 - INFO - Ciudad modificada para idx = 4.
+2025-10-23 19:06:15,138 - INFO - Ciudad modificada para idx = 4.
+2025-10-23 19:06:20,219 - INFO - Se guardaron 5 fichas en el archivo.
+2025-10-23 19:06:20,219 - INFO - Ficha idx = 4 guardada (modificada).
+2025-10-23 19:06:20,219 - INFO - Ficha idx = 4 guardada (modificada).
+2025-10-23 19:06:31,562 - INFO - Se encontraron 1 fichas que copinciden con la búsqueda realizada.

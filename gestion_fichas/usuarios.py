@@ -4,7 +4,7 @@ import uuid
 import secrets
 import hashlib
 import hmac
-from datetime import datetime
+from datetime import datetime, timedelta
 from gestion_fichas.logger_config import app_logger, error_logger, user_logger
 
 #Rutas
@@ -71,7 +71,7 @@ def registrar_usuario(username: str, password: str, role: str = "user") -> dict:
     user = {
         "id": str(uuid.uuid4()),
         "username": username,
-        "salt:": salt.hex(), #Almacenamos salt en hex para serializar
+        "salt": salt.hex(), #Almacenamos salt en hex para serializar
         "password_hash": hash_hex,
         "role": role,
         "created_at":datetime.now().isoformat()
