@@ -129,7 +129,7 @@ def listar_usuarios_publicos():
     return [{k: v for k, v in u.items() if k not in ("salt", "password_hash")} for u in usuarios]
 
 def eliminar_usuario(username:str):
-    usuarios: cargar_usuarios()
+    usuarios = cargar_usuarios()
     u = _buscar_por_username(usuarios, username)
     if not u:
         raise ValueError("Usuario no existe.")
