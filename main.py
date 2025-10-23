@@ -1,6 +1,30 @@
-from gestion_fichas.fichas import (
-    cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
-)
+from gestion_fichas.fichas import cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
+from gestion_fichas.logger_config import app_logger, user_logger
+
+def pantalla_autenticacion():
+    while True:
+        print("\n1) Iniciar sesión\n2) Registrarse\n3) Salir")
+        opt = input("Elige: ").strip()
+        if opt == "1":
+            username = input("Usuario: ").strip()
+            password = input("Contraseña: ").strip()
+            res = autenticar_usuario(username, password)
+            if res:
+                token, user_public = res
+                print(f"Bienvenido {user_public['username']} (role = {user_public['role']}).")
+                return token, user_public
+            else:
+                print("Credenciales incorrectas.")
+        elif opt == "2":
+            username = input("Usuario nuevo: ").strip()
+            password = input("Contraseña: ").strip()
+            try:
+                registrar_usuario(username, password, role="user")
+                print("Usuario creado. Inicie seción.")
+            except ValueError as e:
+                print(e)
+        else:
+            return None, None
 
 def menu_principal():
     fichas = cargar_fichas()
@@ -44,4 +68,9 @@ def main():
     menu_principal()
 
 if __name__ == "__main__":
+    token, current_user = pantalla_autenticacion()
+    if not current_user:
+        print("Saliendo.")
+        exit(0)
+    menu_principal(current_user, token) #Inicia menu principal pasando current_user y token
     main()
