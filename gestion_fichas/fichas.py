@@ -24,7 +24,7 @@ def cargar_fichas(nombre_archivo = NOMBRE_ARCHIVO):
                 logger.info(f"{len(fichas)} fichas cargadaa correctamente desde {nombre_archivo}.")
                 return fichas
         except json.JSONDecodeError:
-            logger.warning(f"El archivo {nombre_archivo} estaba dañado o vacío.")
+            logger.error(f"El archivo {nombre_archivo} estaba dañado o vacío.")
             print(f"El archivo {nombre_archivo} está dañado o vacío. Se creará uno nuevo.")
             return []
         except Exception as e:
@@ -32,7 +32,7 @@ def cargar_fichas(nombre_archivo = NOMBRE_ARCHIVO):
             print(f"Error leyendo {nombre_archivo}: {e}")
             return []
     else:
-        logger.warning(f"No se ha encontrado el archivo {nombre_archivo}. Se usará una lista vacía.")
+        logger.info("Archivo fichas.json no encontrado.")
         print(f"No se encontró {nombre_archivo}. Se creará uno nuevo al cargar.")
         return []
 
@@ -41,6 +41,7 @@ def guardar_fichas(fichas, nombre_archivo = NOMBRE_ARCHIVO):
     try:
         with open(nombre_archivo, "w", encoding="utf-8") as f:
             json.dump(fichas, f, ensure_ascii=False, indent=4)
+        logger.info(f"Se guardaron {len(fichas)} fichas en el archivo.")
     except Exception as e:
         logger.error(f"Error al guardar la ficha: {e}")
         print(f"Error al guardar fichas: {e}")
@@ -111,6 +112,7 @@ def buscar_ficha(fichas):
         logger.warning("No se han encontrado coincidencias en la búsqueda.")
         print("No se encuetran coincidencias.")
         return
+    logger.info(f"Se encontraron {len(resultados)} fichas que copinciden con la búsqueda realizada.")
     print(f"\nSe encontraron {len(resultados)} que coindice/n:")
     for i, (idx, f) in enumerate(resultados, start=1):
         print(
@@ -126,7 +128,7 @@ def modificar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
     nombre_buscado= input("Introduce el nombre de la ficha que quieras buscar/modificar: ").strip().lower()
     coincidencias = buscar_fichas_por_nombre(fichas, nombre_buscado)
     if not coincidencias:
-        logger.warning(f"No se han encontrado coincidencias para {nombre_buscado}.")
+        logger.info(f"No se han encontrado coincidencias para {nombre_buscado}.")
         print("No se encontraron fichas con ese nombre.")
         return
     print(f"\nSe encontraron {len(coincidencias)} coincidencia/s:\n")
@@ -142,6 +144,7 @@ def modificar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
         try:
             pos = int(input(f"Elige el número de la ficha a modificar: (1 - {len(coincidencias)}): ").strip())
             if not (1 <= pos <= len(coincidencias)):
+                logger.error(f"Valor introducido ({pos}) fuera del rango.")
                 raise ValueError("Fuera de rango.")
             sel_index = pos - 1
         except ValueError:
@@ -203,6 +206,7 @@ def eliminar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
         try:
             pos = int(input(f"Elige el número de la ficha a eliminar: (1 - {len(coincidencias)}): ").strip())
             if not (1 <= pos <= len(coincidencias)):
+                logger.error("Se ha introducido una entrada no válida para modificar una ficha.")
                 raise ValueError("Fuera de rango.")
             sel_index = pos - 1
         except ValueError:
@@ -222,10 +226,7 @@ def eliminar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
         try:
             fichas.pop(idx_global)
             guardar_fichas(fichas, nombre_archivo)
-            logger.info(
-                f"Ficha eliminada:\nidx = {idx_global}"
-                f"\nNombre: {ficha_a_eliminar.get('nombre')}"
-                )
+            logger.info(f"Ficha eliminada con idx = {idx_global}, Nombre: {ficha_a_eliminar.get('nombre')}")
             print("Ficha eliminada correctamente.")
         except Exception as e:
             logger.exception(f"Error eliminando la ficha idx = {idx_global}: {e}")
