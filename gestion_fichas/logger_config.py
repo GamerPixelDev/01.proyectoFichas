@@ -2,21 +2,25 @@ import logging
 import os
 from datetime import datetime
 
-#=== Configuración de carpetas ===
-LOG_DIR = os.path.join(os.path.dirname(__file__), "..", "logs")
-os.makedirs(LOG_DIR, exist_ok = True)
+#=== Configuración de rutas ===
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
 
 #=== Rutas de los archivos de log ===
 APP_LOG_FILE = os.path.join(LOG_DIR, "app.log")
 ERROR_LOG_FILE = os.path.join(LOG_DIR, "errors.log")
 USER_LOG_FILE = os.path.join(LOG_DIR, "user_actions.log")
 
-#=== Configuración general del logger ===
+#=== Configuración general de formato del logger ===
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+
+#=== Logger principal ===
+app_logger = logging.getLogger("gestion_fichas")
+app_logger.setLevel(logging.INFO)
 
 #--- Handler principal (mensajes generales) ---
 app_handler = logging.FileHandler(APP_LOG_FILE, encoding="utf-8")
-app_handler.setLevel(logging.INFO)
 app_handler.setFormatter(formatter)
 
 #--- Handler para errores ---
@@ -29,22 +33,22 @@ user_handler = logging.FileHandler(USER_LOG_FILE, encoding="utf-8")
 user_handler.setLevel(logging.INFO)
 user_handler.setFormatter(formatter)
 
-#=== Logger principal ===
-logger = logging.getLogger("gestion_fichas")
-logger.setLevel(logging.INFO)
-
 #Para evitare duplicidades de handlers
-if not logger.handlers:
-    logger.addHandler(app_handler)
-    logger.addHandler(error_handler)
-    logger.addHandler(user_handler)
+if not app_logger.handlers:
+    app_logger.addHandler(app_handler)
+    app_logger.addHandler(error_handler)
+    app_logger.addHandler(user_handler)
 
-#Carpeta donde se guardam los logs
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOG_DIR = os.path.join(BASE_DIR, "logs")
-os.makedirs(LOG_DIR, exist_ok=True)
+#=== Loggers secundarios ===
+logger = app_logger #Paara logs generales
+error_logger = logging.getLogger("gestion_fichas.error")
+usser_logger = logging.getLogger("gestion_fichas.user")
 
-#Nombre del archivo de log por fecha
+#Reutilizan los mismos handlers del logger principal
+error_logger.handlers = app_logger.handlers
+usser_logger.handlers = app_logger.handlers
+
+"""#Nombre del archivo de log por fecha
 log_filename = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d')}.log")
 #Configuración básica del loggin
 logging.basicConfig(
@@ -56,4 +60,4 @@ logging.basicConfig(
     ]
 )
 #Crear un logger que podremos importar desde otros archivos
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)""" #Todo comentado porque se ha sustituido por el codigo anterior.
