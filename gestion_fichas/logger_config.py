@@ -36,10 +36,22 @@ app_logger = logging.getLogger("gestion_fichas")
 app_logger.setLevel(logging.INFO)
 
 #Para evitare duplicidades de handlers
-if not app_logger.handlers:
+if not app_logger.hasHandlers():
     app_logger.addHandler(app_handler)
     app_logger.addHandler(error_handler)
-    app_logger.addHandler(user_handler)
+    #app_logger.addHandler(user_handler)
+
+# --- Logger de errores ---
+error_logger = logging.getLogger("gestion_fichas.error")
+error_logger.setLevel(logging.ERROR)
+error_logger.addHandler(error_handler)
+error_logger.propagate = False  # 🔒 No propaga al padre
+
+# --- Logger de usuario ---
+user_logger = logging.getLogger("gestion_fichas.user")
+user_logger.setLevel(logging.INFO)
+user_logger.addHandler(user_handler)
+user_logger.propagate = False  # 🔒 Evita duplicación en app.log
 
 #=== Loggers secundarios ===
 error_logger = logging.getLogger("gestion_fichas.error")

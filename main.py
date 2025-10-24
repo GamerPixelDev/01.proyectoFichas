@@ -68,30 +68,32 @@ def menu_principal(current_user, token):
         elif opcion == "6":
             cerrar_sesion()
             print("Venga, hasta luego loco. Volviendo al menu de autenticación...")
+            app_logger.info(f"Usuario {current_user['username']} cerró sesión.")
             return
         else:
             print("Opción NO válida. Intentalo de nuevo.")
 
 def main():
-    #Comprobamos si hy una sesión activa
-    sesion = obtener_sesion_actual()
-    if sesion:
-        print(f"Sesión activa detectada: {sesion['usuario']}")
-        continuar = input("¿Desea continuar con esa sesión? (s/n)").strip().lower()
-        if continuar == "s":
-            current_user = {"username": sesion["usuario"], "role": sesion["rol"]}
-            token = sesion["token"]
+    while True:
+        #Comprobamos si hy una sesión activa
+        sesion = obtener_sesion_actual()
+        if sesion:
+            print(f"Sesión activa detectada: {sesion['usuario']}")
+            continuar = input("¿Desea continuar con esa sesión? (s/n)").strip().lower()
+            if continuar == "s":
+                current_user = {"username": sesion["usuario"], "role": sesion["rol"]}
+                token = sesion["token"]
+            else:
+                cerrar_sesion()
+                current_user, token = menu_autenticacion()
         else:
-            cerrar_sesion()
             current_user, token = menu_autenticacion()
-    else:
-        current_user, token = menu_autenticacion()
-    #Inicia el menu principal (psa usuario y token)
-    menu_principal(current_user, token)
-    #Cuando se salga del menu principal -> cerrar sesión
-    cerrar_sesion()
-    print("Sesión cerrada correctamente.")
-    app_logger.info(f"Sesión finalizada para el usuario: {current_user.get('username')}.")
+        #Inicia el menu principal (psa usuario y token)
+        menu_principal(current_user, token)
+        #Cuando se salga del menu principal -> cerrar sesión
+        cerrar_sesion()
+        print("Sesión cerrada correctamente.")
+        app_logger.info(f"Sesión finalizada para el usuario: {current_user.get('username')}.")
 
 if __name__ == "__main__":
     main()
