@@ -3,7 +3,11 @@ import os
 from datetime import datetime
 from gestion_fichas.logger_config import app_logger
 
-SESSION_FILE = os.path.join(os.path.dirname(__file__), "data", "session.json")
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+SESSION_FILE = os.path.join(DATA_DIR, "session.json")
+
+os.makedirs(DATA_DIR, exist_ok=True)
 
 def iniciar_sesion(usuario, token):
     #Guarda la sesión actual en un archivo JSON
