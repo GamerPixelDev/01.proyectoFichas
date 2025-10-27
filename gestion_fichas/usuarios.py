@@ -61,7 +61,7 @@ def _buscar_por_username(usuarios, username:str):
             return u
     return None
 
-def registrar_usuario(username: str, password: str, role: str = "user") -> dict:
+def registrar_usuario(username: str, password: str, role: str = "editor") -> dict:
     #Crea un usuario nuevo. Devuelve el usuario creado (sin password claro) o lanza ValueError
     usuarios = cargar_usuarios()
     if _buscar_por_username(usuarios, username):
@@ -145,3 +145,25 @@ def cambiar_rol(username: str, new_role: str):
     u["role"] = new_role
     guardar_usuarios(usuarios)
     user_logger.info(f"Rol cambiado: {username} -> {new_role}")
+
+def gestionar_roles(current_user):
+    #Esta función permite al administrador ver y cambiar roles
+    usuarios = cargar_usuarios()
+    if current_user.get("role") != "admin":
+        print("No tienes permisos para gestionar roles")
+        return
+    print("\=== GESTIÓN DE ROLES ===")
+    for username, data in usuarios.items():
+        print(f"- {username} (rol actual: {data.get('role', 'editor')})")
+    usuario_objetivo = input("\nIntroduce el nombre del usuario al que quieres cambiar el rol: ").strip()
+    if usuario_objetivo not in usuarios:
+        print("Ese usuario no existe.")
+        return
+    nuevo_rol = input("Nuevo rol (aadmin o editor): ").strip().lower()
+    if nuevo_rol not in ["admin", "editor"]:
+        print("Rol no válido")
+        return
+    usuarios[usuario_objetivo]["role"] = nuevo_rol
+    guardar_usuarios(usuarios)
+    user_logger.info(f"El administrador {current_user['username']} cambió el rol de {usuario_objetivo} a {nuevo_rol}")
+    print(f"Rol de {usuario_objetivo} actualizado a {nuevo_rol}.")

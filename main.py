@@ -1,5 +1,5 @@
 from gestion_fichas.fichas import cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
-from gestion_fichas.usuarios import registrar_usuario, autenticar_usuario
+from gestion_fichas.usuarios import registrar_usuario, autenticar_usuario, gestionar_roles
 from gestion_fichas.session_manager import iniciar_sesion, cerrar_sesion, obtener_sesion_actual
 from gestion_fichas.logger_config import app_logger
 
@@ -19,7 +19,7 @@ def menu_autenticacion():
             resultado = autenticar_usuario(username, password)
             if resultado:
                 user, token = resultado
-                print(f"Bienvenido {user['username']} (rol = {user.get('role', 'user')}).")
+                print(f"Bienvenido {user['username']} (rol = {user.get('role', 'editor')}).")
                 iniciar_sesion(user, token)
                 return user, token
             else:
@@ -50,11 +50,13 @@ def menu_principal(current_user, token):
         2. Ver todas las fichas
         3. Buscar ficha por nombre
         4. Modificar ficha existente
-        5. Eliminar ficha
-        6. Salir
-        ==========================      
+        5. Eliminar ficha  
         """)
-        opcion = input("Elige una opción (1-6): ").strip()
+        if current_user.get("role") == "admin": #Solo los administradores verán esta opción
+            print("6. Gestionar roles de usuarios")
+        print("7. Salir")
+        print("===========================")
+        opcion = input("Elige una opción: ").strip()
         if opcion == "1":
             crear_ficha(fichas)
         elif opcion == "2":
@@ -65,7 +67,9 @@ def menu_principal(current_user, token):
             modificar_ficha(fichas)
         elif opcion == "5":
             eliminar_ficha(fichas)
-        elif opcion == "6":
+        elif opcion == "6" and current_user.get("role") == "admin":
+            gestionar_roles(current_user)
+        elif opcion == "7":
             cerrar_sesion()
             print("Venga, hasta luego loco. Volviendo al menu de autenticación...")
             app_logger.info(f"Usuario {current_user['username']} cerró sesión.")
