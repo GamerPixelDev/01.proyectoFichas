@@ -1,6 +1,6 @@
 from gestion_fichas.fichas import cargar_fichas, guardar_fichas, crear_ficha, mostrar_datos, buscar_ficha, modificar_ficha, eliminar_ficha
 from gestion_fichas.usuarios import (registrar_usuario, autenticar_usuario, cambiar_rol_admin, cambiar_pass_propio, cambiar_pass_usuario_admin, ver_usuarios_admin,
-                                    crear_usuario_admin, eliminar_usuario_admin)
+                                    crear_usuario_admin, eliminar_usuario_admin, verificar_o_crear_admin_inicial)
 from gestion_fichas.session_manager import iniciar_sesion, cerrar_sesion, obtener_sesion_actual
 from gestion_fichas.logger_config import app_logger
 
@@ -125,6 +125,8 @@ def menu_admin(current_user):
             print("Opción NO válida. Intentalo de nuevo.")
 
 def main():
+    #Verificamos o creamos el admin inicial
+    verificar_o_crear_admin_inicial()
     while True:
         #Comprobamos si hy una sesión activa
         sesion = obtener_sesion_actual()
