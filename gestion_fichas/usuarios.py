@@ -148,7 +148,7 @@ def cambiar_pass_priopio(username):
     return True
 
 #=== Funciones admin ===
-def ver_usuarios(current_user):
+def ver_usuarios_admin(current_user):
     if current_user.get("role") != "admin":
         print("Permiso ednegado. SOlo administradores.")
         return
@@ -177,16 +177,30 @@ def crear_usuario_admin(current_user):
         print(f"No se pudo crear el usuario: {v}")
         return False
 
-def eliminar_usuario(username:str):
+def eliminar_usuario_admin(current_user):
+    if current_user.get("role") != "admin":
+        print("Permiso denegado. Solo administradores.")
+        return False
     usuarios = cargar_usuarios()
-    u = _buscar_por_username(usuarios, username)
-    if not u:
-        raise ValueError("Usuario no existe.")
-    usuarios = [x for x in usuarios if x["username"].lower() != username.lower()]
+    username = input("Introduce el nombre del usuario que quieres eliminar: ").strip()
+    if username == current_user["username"]:
+        print("No puedes eliminar tu propio usuario.")
+        return False
+    user = _buscar_por_username(usuarios, username)
+    if not user:
+        print("Ese usuario no existe.")
+        return False
+    confirmar = input(f"¿Estás seguro de que quieres eliminar al usuario {username}? (s/n): ").strip().lower()
+    if confirmar != "s":
+        print("Operación cancelada.")
+        return False
+    usuarios.remove(user)
     guardar_usuarios(usuarios)
-    user_logger.info(f"Usuario eliminado: {username}")
+    user_logger.info(f"El administrador {current_user['username']} eliminó al usuario {username}.")
+    print(f"Usuario {username} eliminado con éxito.")
+    return True
 
-def cambiar_rol(current_user):
+def cambiar_rol_admin(current_user):
     if current_user.get("role") != "admin":
         print("Permiso denegado. Solo administradores.")
         return False
@@ -206,7 +220,7 @@ def cambiar_rol(current_user):
     print(f"Rol de {username} actualizado a {nuevo}.")
     return True
 
-def cambiar_pass_usuario(current_user):
+def cambiar_pass_usuario_admin(current_user):
     if current_user.get("role") != "admin":
         print("Permiso denegado. Solo administradores.")
         return False
