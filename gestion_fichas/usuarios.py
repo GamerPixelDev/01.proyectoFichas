@@ -158,6 +158,23 @@ def ver_usuarios(current_user):
         print(f"- {u['username']} (rol: {u.get('role', 'editor')}, creado: {u['created_at']})")
     user_logger.info(f"Administrador {current_user['username']} vio la lista de usuarios.")
 
+def crear_usuario_admin(current_user):
+    if current_user.get("role") != "admin":
+        print("Permiso denegado. Solo administradores.")
+        return
+    username = input("Elige un nombre de usuario para el nuevo usuario: ").strip()
+    password = input("Elige una contraseña para el nuevo usuario: ").strip()
+    role = input("Elige un rol para el nuevo usuario (admin/editor): ").strip().lower()
+    if role not in ["admin", "editor"]:
+        print("Rol no válido.")
+        return
+    try:
+        registrar_usuario(username, password, role)
+        user_logger.info(f"Administrador {current_user['username']} creó el usuario {username} con rol {role}.")
+        print(f"Usuario {username} creado con rol {role}.")
+    except ValueError as v:
+        print(f"No se pudo crear el usuario: {v}")
+
 def eliminar_usuario(username:str):
     usuarios = cargar_usuarios()
     u = _buscar_por_username(usuarios, username)
