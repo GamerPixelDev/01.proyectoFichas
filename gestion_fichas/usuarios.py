@@ -123,10 +123,40 @@ def logout(token: str):
         return True
     return False
 
-#=== Funciones administrativas ===
-def listar_usuarios_publicos():
+def cambiar_pass_priopio(username):
+    usuarios= cargar_usuarios()
+    user = _buscar_por_username(usuarios, username)
+    if not user:
+        print("Usuario no encontrado.")
+        return False
+    antigua = input("Introduce tu contraseña actual: ").strip()
+    salt = bytes.fromhex(user["salt"])
+    if not _verificar_password(antigua, salt, user["password_hash"]):
+        print("Contraseña actual incorrecta.")
+        return False
+    nueva = input("Introduce tu nueva contraseña (mínimo 6 caracteres): ").strip()
+    if len(nueva) < 6:
+        print("La nueva contraseña es demasiado corta.")
+        return False
+    #actualizamos
+    new_salt = _generar_salt()
+    user["salt"] = new_salt.hex()
+    user["password_hash"] = _hash_password(nueva, new_salt)
+    guardar_usuarios(usuarios)
+    user_logger.info(f"Usuario {username} cambió su contraseña.")
+    print("Contraseña actualizada con éxito.")
+    return True
+
+#=== Funciones admin ===
+def ver_usuarios(current_user):
+    if current_user.get("role") != "admin":
+        print("Permiso ednegado. SOlo administradores.")
+        return
     usuarios = cargar_usuarios()
-    return [{k: v for k, v in u.items() if k not in ("salt", "password_hash")} for u in usuarios]
+    print("\n=== LISTA DE USUARIOS ===")
+    for u in usuarios:
+        print(f"- {u['username']} (rol: {u.get('role', 'editor')}, creado: {u['created_at']})")
+    user_logger.info(f"Administrador {current_user['username']} vio la lista de usuarios.")
 
 def eliminar_usuario(username:str):
     usuarios = cargar_usuarios()
