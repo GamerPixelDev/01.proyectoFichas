@@ -1,11 +1,7 @@
-import os
-import json
-import uuid
-import secrets
-import hashlib
-import hmac
+import os, json, uuid, secrets, hashlib, hmac
 from datetime import datetime, timedelta
 from gestion_fichas.logger_config import app_logger, error_logger, user_logger
+from config import USUARIOS_FILE
 
 #Rutas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -147,6 +143,33 @@ def cambiar_pass_propio(username):
     print("Contraseña actualizada con éxito.")
     return True
 
+def verificar_o_crear_admin_inicial():
+    #Comprobar si hay usuarios. Si no, crear admin inicial.
+    if not os.path.exists(USUARIOS_FILE) or os.path.getsize(USUARIOS_FILE) == 0:
+        print("\n=== No se han encontrado usuarios. Creando usuario administrador inicial===\n")
+        username = input("Elige un nombre de usuario administrador: ").strip()
+        password = input("Contraseña (mínimo 6 caracteres): ").strip()
+        if len(password) < 6:
+            print("La contraseña es demasiado corta. Inténtalo de nuevo.")
+            return        
+        salt = _generar_salt()
+        hash_hex = _hash_password(password, salt)
+        admin = {
+            "id": str(uuid.uuid4()),
+            "username": username,
+            "salt": salt.hex(),
+            "password_hash": hash_hex,
+            "role": "admin",
+            "created_at": datetime.now().isoformat()
+            }
+        with open(USUARIOS_FILE, "w", encoding="utf-8") as f:
+            json.dump([admin], f, ensure_ascii=False, indent=4)
+        print(f"Usuario administrador '{username}' creado con éxito.")
+        user_logger.info(f"Usuario administrador inicial creado: {username}")
+        return admin
+    else:
+        return None
+    
 #=== Funciones admin ===
 def ver_usuarios_admin(current_user):
     if current_user.get("role") != "admin":
