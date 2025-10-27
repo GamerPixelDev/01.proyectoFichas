@@ -21,7 +21,7 @@ def cargar_fichas(nombre_archivo = NOMBRE_ARCHIVO):
         try:
             with open(nombre_archivo, "r", encoding="utf-8") as f:
                 fichas = json.load(f)
-                app_logger.info(f"{len(fichas)} fichas cargadaa correctamente desde {nombre_archivo}.")
+                app_logger.info(f"{len(fichas)} fichas cargadas correctamente desde {nombre_archivo}.")
                 return fichas
         except json.JSONDecodeError:
             error_logger.error(f"El archivo {nombre_archivo} estaba dañado o vacío.")
@@ -111,7 +111,7 @@ def buscar_ficha(fichas):
         app_logger.warning("No se han encontrado coincidencias en la búsqueda.")
         print("No se encuetran coincidencias.")
         return
-    app_logger.info(f"Se encontraron {len(resultados)} fichas que copinciden con la búsqueda realizada.")
+    app_logger.info(f"Se encontraron {len(resultados)} fichas que coinciden con la búsqueda realizada.")
     print(f"\nSe encontraron {len(resultados)} que coindice/n:")
     for i, (idx, f) in enumerate(resultados, start=1):
         print(
