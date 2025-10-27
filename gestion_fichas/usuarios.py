@@ -206,24 +206,24 @@ def cambiar_rol(current_user):
     print(f"Rol de {username} actualizado a {nuevo}.")
     return True
 
-def gestionar_roles(current_user):
-    #Esta función permite al administrador ver y cambiar roles
-    usuarios = cargar_usuarios()
+def cambiar_pass_usuario(current_user):
     if current_user.get("role") != "admin":
-        print("No tienes permisos para gestionar roles")
-        return
-    print("\=== GESTIÓN DE ROLES ===")
-    for username, data in usuarios.items():
-        print(f"- {username} (rol actual: {data.get('role', 'editor')})")
-    usuario_objetivo = input("\nIntroduce el nombre del usuario al que quieres cambiar el rol: ").strip()
-    if usuario_objetivo not in usuarios:
+        print("Permiso denegado. Solo administradores.")
+        return False
+    usuarios = cargar_usuarios()
+    username = input("Introduce el nombre del usuario al que quieres cambiar la contraseña: ").strip()
+    user = _buscar_por_username(usuarios, username)
+    if not user:
         print("Ese usuario no existe.")
-        return
-    nuevo_rol = input("Nuevo rol (aadmin o editor): ").strip().lower()
-    if nuevo_rol not in ["admin", "editor"]:
-        print("Rol no válido")
-        return
-    usuarios[usuario_objetivo]["role"] = nuevo_rol
+        return False
+    nueva = input("Introduce la nueva contraseña (mínimo 6 caracteres): ").strip()
+    if len(nueva) < 6:
+        print("La nueva contraseña es demasiado corta.")
+        return False
+    new_salt = _generar_salt()
+    user["salt"] = new_salt.hex()
+    user["password_hash"] = _hash_password(nueva, new_salt)
     guardar_usuarios(usuarios)
-    user_logger.info(f"El administrador {current_user['username']} cambió el rol de {usuario_objetivo} a {nuevo_rol}")
-    print(f"Rol de {usuario_objetivo} actualizado a {nuevo_rol}.")
+    user_logger.info(f"El administrador {current_user['username']} cambió la contraseña de {username}.")
+    print(f"Contraseña de {username} actualizada con éxito.")
+    return True
