@@ -123,7 +123,7 @@ def logout(token: str):
         return True
     return False
 
-def cambiar_pass_priopio(username):
+def cambiar_pass_propio(username):
     usuarios= cargar_usuarios()
     user = _buscar_por_username(usuarios, username)
     if not user:
@@ -150,7 +150,7 @@ def cambiar_pass_priopio(username):
 #=== Funciones admin ===
 def ver_usuarios_admin(current_user):
     if current_user.get("role") != "admin":
-        print("Permiso ednegado. SOlo administradores.")
+        print("Permiso denegado. Solo administradores.")
         return
     usuarios = cargar_usuarios()
     print("\n=== LISTA DE USUARIOS ===")
@@ -171,7 +171,7 @@ def crear_usuario_admin(current_user):
     try:
         registrar_usuario(username, password, role)
         user_logger.info(f"Administrador {current_user['username']} creó el usuario {username} con rol {role}.")
-        print(f"Usuario creado correctamente.").
+        print(f"Usuario creado correctamente.")
         return True
     except ValueError as v:
         print(f"No se pudo crear el usuario: {v}")

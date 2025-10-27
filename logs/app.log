@@ -62,3 +62,48 @@
 2025-10-24 10:29:16,129 - WARNING - Intento de cierre de sesión sin sesión activa.
 2025-10-24 10:29:16,130 - INFO - Sesión finalizada para el usuario: Carlos.
 2025-10-24 10:29:18,870 - INFO - Usuario salió desde el menú de autenticación.
+2025-10-27 15:58:05,782 - INFO - Usuario autenticado: Carlos
+2025-10-27 15:58:05,838 - INFO - Sesión iniciada para el usuario: Carlos.
+2025-10-27 15:58:05,846 - INFO - 4 fichas cargadaa correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\gestion_fichas\..\data\fichas.json.
+2025-10-27 15:58:22,693 - INFO - Sesión cerrada para el usuario: Carlos
+2025-10-27 15:58:22,693 - INFO - Usuario Carlos cerró sesión.
+2025-10-27 15:58:22,693 - WARNING - Intento de cierre de sesión sin sesión activa.
+2025-10-27 15:58:22,694 - INFO - Sesión finalizada para el usuario: Carlos.
+2025-10-27 15:58:26,659 - INFO - Usuario salió desde el menú de autenticación.
+2025-10-27 15:59:26,918 - INFO - Usuario autenticado: Carlos
+2025-10-27 15:59:26,980 - INFO - Sesión iniciada para el usuario: Carlos.
+2025-10-27 15:59:26,980 - INFO - 4 fichas cargadaa correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\gestion_fichas\..\data\fichas.json.
+2025-10-27 15:59:44,994 - INFO - Guardados 2 usuarios.
+2025-10-27 15:59:44,994 - INFO - El administrador Carlos cambió el rol de Peneni a editor
+2025-10-27 16:00:28,419 - INFO - Sesión cerrada para el usuario: Carlos
+2025-10-27 16:00:28,420 - INFO - Usuario Carlos cerró sesión.
+2025-10-27 16:00:28,420 - WARNING - Intento de cierre de sesión sin sesión activa.
+2025-10-27 16:00:28,422 - INFO - Sesión finalizada para el usuario: Carlos.
+2025-10-27 16:00:30,188 - INFO - Usuario salió desde el menú de autenticación.
+2025-10-27 16:13:30,262 - INFO - Usuario autenticado: Carlos
+2025-10-27 16:13:30,331 - INFO - Sesión iniciada para el usuario: Carlos.
+2025-10-27 16:13:30,331 - INFO - 4 fichas cargadaa correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\gestion_fichas\..\data\fichas.json.
+2025-10-27 16:13:46,526 - INFO - Sesión cerrada para el usuario: Carlos
+2025-10-27 16:13:46,526 - INFO - Usuario Carlos cerró sesión.
+2025-10-27 16:13:46,526 - WARNING - Intento de cierre de sesión sin sesión activa.
+2025-10-27 16:13:46,526 - INFO - Sesión finalizada para el usuario: Carlos.
+2025-10-27 16:13:49,083 - INFO - Usuario salió desde el menú de autenticación.
+2025-10-27 16:14:44,688 - INFO - Usuario autenticado: Carlos
+2025-10-27 16:14:44,749 - INFO - Sesión iniciada para el usuario: Carlos.
+2025-10-27 16:14:44,749 - INFO - 4 fichas cargadaa correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\gestion_fichas\..\data\fichas.json.
+2025-10-27 16:14:54,504 - INFO - Administrador Carlos vio la lista de usuarios.
+2025-10-27 16:15:15,638 - INFO - Guardados 1 usuarios.
+2025-10-27 16:15:15,638 - INFO - El administrador Carlos eliminó al usuario Peneni.
+2025-10-27 16:15:21,205 - INFO - Administrador Carlos vio la lista de usuarios.
+2025-10-27 16:15:52,971 - INFO - Guardados 2 usuarios.
+2025-10-27 16:15:52,972 - INFO - Usuario registrado: New Peneni (role=editor)
+2025-10-27 16:15:52,972 - INFO - Administrador Carlos creó el usuario New Peneni con rol editor.
+2025-10-27 16:15:56,790 - INFO - Administrador Carlos vio la lista de usuarios.
+2025-10-27 16:16:20,428 - INFO - Guardados 2 usuarios.
+2025-10-27 16:16:20,428 - INFO - El administrador Carlos cambió la contraseña de New Peneni.
+2025-10-27 16:16:24,301 - INFO - Administrador Carlos vio la lista de usuarios.
+2025-10-27 16:16:35,961 - INFO - Sesión cerrada para el usuario: Carlos
+2025-10-27 16:16:35,961 - INFO - Usuario Carlos cerró sesión.
+2025-10-27 16:16:35,961 - WARNING - Intento de cierre de sesión sin sesión activa.
+2025-10-27 16:16:35,961 - INFO - Sesión finalizada para el usuario: Carlos.
+2025-10-27 16:16:38,888 - INFO - Usuario salió desde el menú de autenticación.
