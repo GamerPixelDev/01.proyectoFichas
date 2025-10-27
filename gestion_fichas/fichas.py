@@ -1,21 +1,21 @@
-import json
-import os
+import json, os
 from datetime import datetime
 from gestion_fichas.utils import pedir_nombre, pedir_edad, pedir_ciudad
 from gestion_fichas.logger_config import app_logger, error_logger, user_logger
+from config import FICHAS_FILE, DATA_DIR
 
 #=== Configuración de rutas ===
 #Carpeta base --> donde está este archivo (gestion_fichas/)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #Carpeta 'data' --> un nivel por encima
-DATA_DIR = os.path.join(BASE_DIR, "..", "data")
+#DATA_DIR = os.path.join(BASE_DIR, "..", "data")
 #Crear la carpeta si no existe
 os.makedirs(DATA_DIR, exist_ok=True)
 #Ruta completa del archivo JSON
-NOMBRE_ARCHIVO = os.path.join(DATA_DIR, "fichas.json")
+#NOMBRE_ARCHIVO = os.path.join(DATA_DIR, "fichas.json")
 
 #=== Funciones de carga y guardado ===
-def cargar_fichas(nombre_archivo = NOMBRE_ARCHIVO):
+def cargar_fichas(nombre_archivo = FICHAS_FILE):
     #Carga las fichas desde un archivo JSON si existe, o crea una lista vacia.
     if os.path.exists(nombre_archivo):
         try:
@@ -36,7 +36,7 @@ def cargar_fichas(nombre_archivo = NOMBRE_ARCHIVO):
         print(f"No se encontró {nombre_archivo}. Se creará uno nuevo al cargar.")
         return []
 
-def guardar_fichas(fichas, nombre_archivo = NOMBRE_ARCHIVO):
+def guardar_fichas(fichas, nombre_archivo = FICHAS_FILE):
     #Guarda la lista completa en JSON (sobreescribe).
     try:
         with open(nombre_archivo, "w", encoding="utf-8") as f:
@@ -48,7 +48,7 @@ def guardar_fichas(fichas, nombre_archivo = NOMBRE_ARCHIVO):
     else:
         print(f"Fichas guardadas en {nombre_archivo} (total: {len(fichas)}).")
 
-def crear_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
+def crear_ficha(fichas, nombre_archivo = FICHAS_FILE):
     try:
         #Crea una nueva ficha y la añade a la lista, guardando después.
         nombre = pedir_nombre()
@@ -59,8 +59,8 @@ def crear_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
             "nombre": nombre,
             "edad": edad,
             "ciudad": ciudad,
-            "fecha_creacion":fecha_now,
-            "fecha_modificacion":None
+            "fecha_creacion": fecha_now,
+            "fecha_modificacion": None
         }
         #Comprobamos duplicados por nombre exacto (insensible a mayúsculas)
         existentes = [f for f in fichas if f["nombre"].lower() == nombre.lower()]
@@ -123,7 +123,7 @@ def buscar_ficha(fichas):
             f"\nModificada: {f['fecha_modificacion']}"
         )
 
-def modificar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
+def modificar_ficha(fichas, nombre_archivo = FICHAS_FILE):
     nombre_buscado= input("Introduce el nombre de la ficha que quieras buscar/modificar: ").strip().lower()
     coincidencias = buscar_fichas_por_nombre(fichas, nombre_buscado)
     if not coincidencias:
@@ -183,7 +183,7 @@ def modificar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
         else:
             print("Opción NO válida. Inténtelo de nuevo.")
 
-def eliminar_ficha(fichas, nombre_archivo = NOMBRE_ARCHIVO):
+def eliminar_ficha(fichas, nombre_archivo = FICHAS_FILE):
     nombre_buscado= input("Introduce el nombre de la ficha que quieras eliminar: ").strip().lower()
     coincidencias = buscar_fichas_por_nombre(fichas, nombre_buscado)
     if not coincidencias:

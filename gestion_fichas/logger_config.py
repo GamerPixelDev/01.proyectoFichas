@@ -1,5 +1,5 @@
-import logging
-import os
+import logging, os
+from config import LOG_DIR, APP_LOG_FILE, ERROR_LOG_FILE, USER_LOG_FILE
 
 #=== Configuración de rutas ===
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -7,9 +7,9 @@ LOG_DIR = os.path.join(BASE_DIR, "..", "logs")
 os.makedirs(LOG_DIR, exist_ok=True)
 
 #=== Rutas de los archivos de log ===
-APP_LOG_FILE = os.path.join(LOG_DIR, "app.log")
-ERROR_LOG_FILE = os.path.join(LOG_DIR, "errors.log")
-USER_LOG_FILE = os.path.join(LOG_DIR, "user_actions.log")
+#APP_LOG_FILE = os.path.join(LOG_DIR, "app.log")
+#ERROR_LOG_FILE = os.path.join(LOG_DIR, "errors.log")
+#USER_LOG_FILE = os.path.join(LOG_DIR, "user_actions.log")
 
 #=== Formato general ===
 formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")

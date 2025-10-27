@@ -1,11 +1,11 @@
-import json
-import os
+import json, os
 from datetime import datetime
 from gestion_fichas.logger_config import app_logger
+from config import SESSION_FILE
 
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "data")
-SESSION_FILE = os.path.join(DATA_DIR, "session.json")
+#BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+#DATA_DIR = os.path.join(BASE_DIR, "data")
+#SESSION_FILE = os.path.join(DATA_DIR, "session.json")
 
 os.makedirs(DATA_DIR, exist_ok=True)
 

@@ -1,13 +1,13 @@
 import os, json, uuid, secrets, hashlib, hmac
 from datetime import datetime, timedelta
 from gestion_fichas.logger_config import app_logger, error_logger, user_logger
-from config import USUARIOS_FILE
+from config import USUARIOS_FILE, DEFAULT_ROLE, ADMIN_ROLE
 
 #Rutas
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "..", "data")
-os.makedirs(DATA_DIR, exist_ok=True)
-USUARIOS_FILE = os.path.join(DATA_DIR, "usuarios.json")
+#BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+#DATA_DIR = os.path.join(BASE_DIR, "..", "data")
+#os.makedirs(DATA_DIR, exist_ok=True)
+#USUARIOS_FILE = os.path.join(DATA_DIR, "usuarios.json")
 
 #Configuración de hashing
 HASH_NAME = "sha256"
@@ -172,7 +172,7 @@ def verificar_o_crear_admin_inicial():
     
 #=== Funciones admin ===
 def ver_usuarios_admin(current_user):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != ADMIN_ROLE:
         print("Permiso denegado. Solo administradores.")
         return
     usuarios = cargar_usuarios()
@@ -182,13 +182,13 @@ def ver_usuarios_admin(current_user):
     user_logger.info(f"Administrador {current_user['username']} vio la lista de usuarios.")
 
 def crear_usuario_admin(current_user):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != ADMIN_ROLE:
         print("Permiso denegado. Solo administradores.")
         return False
     username = input("Elige un nombre de usuario para el nuevo usuario: ").strip()
     password = input("Elige una contraseña para el nuevo usuario: ").strip()
     role = input("Elige un rol para el nuevo usuario (admin/editor): ").strip().lower()
-    if role not in ["admin", "editor"]:
+    if role not in [ADMIN_ROLE, DEFAULT_ROLE]:
         print("Rol no válido.")
         return False
     try:
@@ -201,7 +201,7 @@ def crear_usuario_admin(current_user):
         return False
 
 def eliminar_usuario_admin(current_user):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != ADMIN_ROLE:
         print("Permiso denegado. Solo administradores.")
         return False
     usuarios = cargar_usuarios()
@@ -224,7 +224,7 @@ def eliminar_usuario_admin(current_user):
     return True
 
 def cambiar_rol_admin(current_user):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != ADMIN_ROLE:
         print("Permiso denegado. Solo administradores.")
         return False
     usuarios = cargar_usuarios()
@@ -234,7 +234,7 @@ def cambiar_rol_admin(current_user):
         print("Ese usuario no existe.")
         return False
     nuevo = input("Nuevo rol (admin o editor): ").strip().lower()
-    if nuevo not in ["admin", "editor"]:
+    if nuevo not in [ADMIN_ROLE, DEFAULT_ROLE]:
         print("Rol no válido")
         return False
     user["role"] = nuevo
@@ -244,7 +244,7 @@ def cambiar_rol_admin(current_user):
     return True
 
 def cambiar_pass_usuario_admin(current_user):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != ADMIN_ROLE:
         print("Permiso denegado. Solo administradores.")
         return False
     usuarios = cargar_usuarios()

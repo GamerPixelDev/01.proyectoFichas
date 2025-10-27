@@ -3,7 +3,7 @@ from gestion_fichas.usuarios import (registrar_usuario, autenticar_usuario, camb
                                     crear_usuario_admin, eliminar_usuario_admin, verificar_o_crear_admin_inicial)
 from gestion_fichas.session_manager import iniciar_sesion, cerrar_sesion, obtener_sesion_actual
 from gestion_fichas.logger_config import app_logger
-
+from config import DATA_DIR
 
 def menu_autenticacion():
     while True:
