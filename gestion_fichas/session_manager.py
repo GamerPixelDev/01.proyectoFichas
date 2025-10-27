@@ -1,7 +1,7 @@
 import json, os
 from datetime import datetime
 from gestion_fichas.logger_config import app_logger
-from config import SESSION_FILE
+from config import SESSION_FILE, DATA_DIR
 
 #BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 #DATA_DIR = os.path.join(BASE_DIR, "data")

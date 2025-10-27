@@ -107,3 +107,12 @@
 2025-10-27 16:16:35,961 - WARNING - Intento de cierre de sesión sin sesión activa.
 2025-10-27 16:16:35,961 - INFO - Sesión finalizada para el usuario: Carlos.
 2025-10-27 16:16:38,888 - INFO - Usuario salió desde el menú de autenticación.
+2025-10-27 19:02:53,865 - INFO - Usuario autenticado: Carlos
+2025-10-27 19:02:53,921 - INFO - Sesión iniciada para el usuario: Carlos.
+2025-10-27 19:02:53,921 - INFO - 4 fichas cargadas correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\data\fichas.json.
+2025-10-27 19:03:02,122 - INFO - Administrador Carlos vio la lista de usuarios.
+2025-10-27 19:03:23,853 - INFO - Sesión cerrada para el usuario: Carlos
+2025-10-27 19:03:23,853 - INFO - Usuario Carlos cerró sesión.
+2025-10-27 19:03:23,853 - WARNING - Intento de cierre de sesión sin sesión activa.
+2025-10-27 19:03:23,853 - INFO - Sesión finalizada para el usuario: Carlos.
+2025-10-27 19:03:25,610 - INFO - Usuario salió desde el menú de autenticación.
