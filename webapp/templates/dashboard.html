@@ -6,8 +6,21 @@
         <title>Panel principal</title>
     </head>
     <body>
-        <h1>Bienvenido, {{user['username']}}</h1>
-        <p>Tu rol es: {{user['role']}}</p>
-        <a href="{{ url_for('main_routes.logout') }}">Cerrar sesión</a>
+        <h1>Bienvenido, {{ usuario }}</h1>
+        <p>Tu rol es: {{ rol }}</p>
+        {% if rol == 'admin' %}
+            <h2>Funciones de administrador</h2>
+            <ul>
+                <li><a href="{{ url_for('gestionar_usuarios') }}">Gestionar usuarios</a></li>
+                <li><a href="{{ url_for('dashboar_fichas') }}">Gestionar fichas</a></li>
+            </ul>
+        {% else %}
+            <h2>Funciones de editor</h2>
+            <ul>
+                <li><a href="{{ url_for('dashboard_fichas') }}">Ver o editar fichas</a></li>
+            </ul>
+        {% endif %}
+        <hr>
+        <a href="{{ url_for('logout') }}">Cerrar sesión</a>
     </body>
 </html>

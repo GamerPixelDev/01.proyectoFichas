@@ -40,6 +40,26 @@ def dashboard():
     rol = session.get("rol", "editor")
     return render_template('dashboard.html', username = username, role = rol)
 
+#=== RUTA GTESTIÓN DE USUARIOS (SOLO ADMIN) ===#
+@app.route('/usuarios')
+def gestion_usuarios():
+    if "usuario" not in session:
+        flash("Por favor, inicia sesión para acceder a la gestión de usuarios.", "warning")
+        return redirect(url_for('login'))
+    if session.get("rol") != "admin":
+        flash("No tienes permisos para acceder a esta sección.", "danger")
+        return redirect(url_for('dashboard'))
+    usuarios = cargar_usuarios()
+    return render_template('usuarios.html', usuarios = usuarios)
+
+#Solo se muestra por ahora
+@app.route('/fichas')
+def gestion_fichas():
+    if "usuario" not in session:
+        flash("Por favor, inicia sesión para acceder a la gestión de fichas.", "warning")
+        return redirect(url_for('login'))
+    return render_template('fichas.html')
+
 #=== RUTA CERRAR SESIÓN ===#
 @app.route('/logout')
 def logout():
