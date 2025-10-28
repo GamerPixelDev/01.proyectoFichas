@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash, session
 from gestion_fichas.usuarios import autenticar_usuario, registrar_usuario, cargar_usuarios
 from gestion_fichas.logger_config import app_logger, user_logger
 from gestion_fichas. session_manager import cerrar_sesion
@@ -7,8 +7,11 @@ import os
 app = Flask(__name__)
 app.secret_key = "super_clave_segura_123" #Cambarla luego por algo más robusto
 
+@app.route('/')
+def home():
+    return redirect(url_for('login'))
+
 #=== RUTA LOGIN ===#
-@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
