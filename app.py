@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, render_template, request, redirect, url_for,
 from gestion_fichas.usuarios import autenticar_usuario, registrar_usuario, cargar_usuarios
 from gestion_fichas.logger_config import app_logger, user_logger
 from gestion_fichas. session_manager import cerrar_sesion
+from webapp import create_app
 import os
 
 app = Flask(__name__)

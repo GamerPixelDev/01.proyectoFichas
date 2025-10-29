@@ -81,13 +81,20 @@ _SESSIONS = {} #Sessions in memory: token -> {user_id, expires_at}
 
 def autenticar_usuario(username: str, password: str):
     #Comprueba credenciales. Si OK devuelve session_token, user_without_secrets; si no None.
+    print(f"Autenticando usuario: {username}")
     usuarios = cargar_usuarios()
+    print(f"Usuarios cargados: {len(usuarios)})")
     user = _buscar_por_username(usuarios, username)
+    print(f"Usuario encontrado: {user['username'] if user else 'NO ENCONTRADO'}")
     if not user:
+        print("Usuario no existe.")
         return None
     salt = bytes.fromhex(user["salt"])
+    print(f"Salt obtenido: {salt.hex()}")
     if not _verificar_password(password, salt, user["password_hash"]):
         return None
+    resultado = _verificar_password(password, salt, user["password_hash"])
+    print(f"Resultado verificación contraseña: {resultado}.")
     #Generar token y guardar sesion en memoria
     token = secrets.token_urlsafe(32)
     expires_at = datetime.now() + timedelta(hours = TOKEN_EXPIRATION_HOURS)

@@ -6,7 +6,7 @@ from gestion_fichas.logger_config import app_logger
 from config import DATA_DIR
 from webapp import create_app
 
-app = create_app()
+#app = create_app()
 
 def menu_autenticacion():
     while True:
@@ -152,5 +152,5 @@ def main():
         app_logger.info(f"Sesión finalizada para el usuario: {current_user.get('username')}.")
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    #main()  # Descomentar para ejecutar la versión consola
+    #app.run(debug=True)
+    main()  # Descomentar para ejecutar la versión consola
