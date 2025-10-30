@@ -4,7 +4,6 @@ from gestion_fichas.usuarios import (registrar_usuario, autenticar_usuario, camb
 from gestion_fichas.session_manager import iniciar_sesion, cerrar_sesion, obtener_sesion_actual
 from gestion_fichas.logger_config import app_logger
 from config import DATA_DIR
-from webapp import create_app
 
 #app = create_app()
 

@@ -148,3 +148,13 @@
 2025-10-29 18:40:40,826 - ERROR - Error durante el inicio de sesión: tuple indices must be integers or slices, not str
 2025-10-29 18:41:31,928 - INFO - Usuario autenticado: Carlos
 2025-10-29 18:41:31,928 - ERROR - Error durante el inicio de sesión: tuple indices must be integers or slices, not str
+2025-10-30 08:39:07,615 - INFO - Usuario autenticado: Carlos
+2025-10-30 08:39:07,696 - INFO - Sesión iniciada para el usuario: Carlos.
+2025-10-30 08:39:07,697 - INFO - 4 fichas cargadas correctamente desde e:\06.AREA_PROGRAMACION\01.proyectoFichas\data\fichas.json.
+2025-10-30 08:39:14,954 - INFO - Fichas mostradas correctamente.
+2025-10-30 08:39:27,498 - INFO - Administrador Carlos vio la lista de usuarios.
+2025-10-30 08:39:36,599 - INFO - Sesión cerrada para el usuario: Carlos
+2025-10-30 08:39:36,601 - INFO - Usuario Carlos cerró sesión.
+2025-10-30 08:39:36,601 - WARNING - Intento de cierre de sesión sin sesión activa.
+2025-10-30 08:39:36,601 - INFO - Sesión finalizada para el usuario: Carlos.
+2025-10-30 08:39:38,033 - INFO - Usuario salió desde el menú de autenticación.
